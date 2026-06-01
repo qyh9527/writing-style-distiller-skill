@@ -3,210 +3,136 @@ name: writing-style-distiller
 description: Use when asked for 文风蒸馏, 文风配置, 写作风格分析, AIRP writing style prompts, writing style distillation, style profiles, or <writing_style> XML from an author name, literary text file, excerpt samples, or style description
 ---
 
-# Writing Style Distiller
+# Writing Style Distiller v2
 
-## Overview
+从作者名、文学文本、摘录样本或风格描述中，蒸馏出可执行的 `<writing_style>` 配置。采用自适应多阶段工作流，每阶段文件落盘并设审查门。
 
-Generate an executable `<writing_style>` XML configuration from an author name, literary text, excerpt samples, or a style description. Treat the result as a writing-control profile: every field must guide future AI writing, not merely summarize literary criticism.
+## 输出语言
 
-This skill optimizes for strong practical control: it separates writing style from plot tone, diagnoses the style's control axis, preserves evidence honesty, and adds prompt-engineering safeguards for AIRP / roleplay / model-specific use.
+使用用户的对话语言书写说明和标签。XML 标签名不变。示例保持作者原文语言。
 
-## Output Language
+## 核心边界
 
-Use the user's conversation language for explanations and section labels. Keep XML tag names unchanged. Keep excerpts in the author's original writing language.
+- `<writing_style>` 控制**如何书写**：措辞、句法、叙事、段落、节奏、对话处理、感官选择。
+- `<writing_style>` **不控制**：长期剧情走向、事件结果、关系发展、角色选择、结局。
+- 若用户请求剧情方向/情感命运/基调，输出为独立的 `<tone>` 块，不混入 `<writing_style>`。
+- 区分三个概念：
+  - **文风**：写作细节与段落控制。
+  - **情感底色**：读者体验的审美/情绪色彩；仅改变呈现方式时可置于文风内。
+  - **剧情基调**：故事轨迹与事件处理；必须独立。
+- 作者名和作品名是证据来源，不是最终控制指令。用可执行参数替换"模仿X"。
 
-## Required Supporting Files
+## 支持文件
 
-Read these files when using this skill:
+在执行各阶段时，按需读取以下文件：
 
-- `output-schema.md` for the XML structure and field rules.
-- `citation-and-examples.md` for original-language examples, citations, and selection rationale.
-- `quality-checklist.md` for the final validation gate.
-- `prompt-optimization.md` for style/tone separation, label-chain risk, model adaptation, example-flow rules, and drift reset rules.
+| 文件 | 用途 | 读取时机 |
+|---|---|---|
+| `output-format.md` | 输出格式定义与完整示例 | Phase 3-4 |
+| `quality-checklist.md` | 质检清单 | Phase 4 |
+| `phases/research.md` | 研究与证据收集指令 | Phase 1 |
+| `phases/diagnosis.md` | 风格诊断与架构指令 | Phase 2 |
+| `phases/drafting.md` | 文风初稿生成指令 | Phase 3 |
+| `phases/optimization.md` | 优化与质检指令 | Phase 4 |
+| `knowledge/style-families.md` | 风格家族分类与密度表 | Phase 2 |
+| `knowledge/label-risk-table.md` | 高风险标签行为化转换 | Phase 3-4 |
+| `knowledge/model-adaptation.md` | 模型适配规则 | Phase 4 |
 
-## Core Boundaries
+## 自适应路由
 
-- `<writing_style>` controls how text is presented: wording, syntax, narration, paragraphing, rhythm, dialogue handling, sensory selection, and aesthetic experience.
-- `<writing_style>` must not control long-term plot direction, event outcomes, relationship progress, character choices, or prescribed endings.
-- If the user requests plot direction, emotional fate, healing/tragic trajectory, or ending tendency, output it as a separate optional `<tone>` block, not inside `<writing_style>`.
-- Distinguish three concepts:
-  - `writing style`: writing details and paragraph control.
-  - `affective baseline`: reader-facing aesthetic/emotional color; allowed inside style when it only changes presentation.
-  - `plot tone`: story trajectory and event handling; keep separate unless the user explicitly asks for it.
-- Treat author names and works as evidence sources, not as final control instructions. Replace “imitate X” with executable parameters.
+每次接收请求时，判断输入类型并选择对应深度模式：
 
-## Input Routing
+| 输入类型 | 深度模式 | 阶段路线 |
+|---|---|---|
+| 作者名（无文本） | **深度** | P1 研究 → P2 诊断 → P3 初稿 → P4 优化 |
+| 作者名 + 代表作 | **深度** | P1 研究 → P2 诊断 → P3 初稿 → P4 优化 |
+| AIRP 预设定制（复杂） | **深度** | P1 研究 → P2 诊断 → P3 初稿 → P4 优化 |
+| 本地文件 / 大量摘录 | **标准** | P1 分析 → P2 初稿+质检 → P3 输出 |
+| 少量摘录（<500字） | **标准** | P1 分析 → P2 初稿+质检 → P3 输出 |
+| 风格描述（>100字或多维度） | **标准** | P1 分析 → P2 初稿+质检 → P3 输出 |
+| 风格描述（≤100字且单一方向） | **快速** | P1 草稿 → P2 输出 |
+| 已有文风 + 修改请求 | **快速** | P1 草稿 → P2 输出 |
 
-| User input | Primary action |
+路由时向用户输出诊断信息：
+> "检测到输入类型：[类型] → 进入**[深度/标准/快速]模式**。预计 [N] 个阶段，每阶段有审查门。"
+
+仅当输入无法识别作者、文件、样本、风格目标或模型目标时，才提出一个澄清问题。
+
+## 工作流阶段
+
+### 深度模式（4 阶段）
+
+**Phase 1: 研究与证据收集**
+- 读取 `phases/research.md` 执行。
+- 产出：`docs/style-output/{timestamp}-{style-name}/research-notes.md`
+- 🚪 审查门：展示研究笔记摘要，确认方向。
+
+**Phase 2: 风格诊断与架构**
+- 读取 `phases/diagnosis.md` + `knowledge/style-families.md` 执行。
+- 产出：`docs/style-output/{timestamp}-{style-name}/style-diagnosis.md`
+- 🚪 审查门：展示密度分配方案，确认架构。
+
+**Phase 3: 文风初稿**
+- 读取 `phases/drafting.md` + `output-format.md` + `knowledge/label-risk-table.md` 执行。
+- 产出：`docs/style-output/{timestamp}-{style-name}/style-draft.md`
+- 🚪 审查门：展示完整初稿，接受修改意见。
+
+**Phase 4: 优化 + 质检**
+- 读取 `phases/optimization.md` + `quality-checklist.md` + `knowledge/model-adaptation.md` 执行。
+- 产出：终端输出最终 `<writing_style>` + 可选 `final-style.md` 落盘。
+
+### 标准模式（3 阶段）
+
+Phase 1: 源文本分析 → `analysis-notes.md` → 🚪 审查门
+Phase 2: 文风草稿 + 质检 → `style-draft.md` → 🚪 审查门
+Phase 3: 最终输出
+
+### 快速模式（2 阶段）
+
+Phase 1: 直接生成草稿 → `style-draft.md` → 🚪 审查门
+Phase 2: 最终输出
+
+## 审查门规则
+
+每个 Phase 完成后，必须执行以下两步：
+1. **文件落盘**：将当前阶段产物写入 `docs/style-output/{timestamp}-{style-name}/` 对应文件。
+2. **交互审查**：在终端展示摘要，停止执行，向用户发送审查门提问。
+   - 只有在用户确认（如"没问题"、"继续"、"同意"）后，才读取下一阶段指令文件继续执行。
+   - **禁止一次性输出所有中间产物和终稿。必须分阶段、分回合让用户逐步确认。**
+
+## 异常处理
+
+| 情况 | 处理 |
 |---|---|
-| Author name | Research representative works, criticism, original excerpts, and cultural aesthetics. |
-| Author name + representative work | Focus research on the named work first, then compare across the author's style if needed. |
-| Local text file | Read and analyze the file before searching externally. Do not override the sample with generic author commentary. |
-| Excerpt samples | Distill only from the provided samples unless the user asks for external research. |
-| Style description | Convert the description into executable style parameters and mark source limitations. |
-| AIRP / roleplay / preset style request | Prioritize style-only control, paragraphing, anti-cliche behavior, model adaptation, and drift reset safeguards. |
-| Model target such as Gemini or Claude | Apply `prompt-optimization.md` model notes before drafting final XML. |
-| Example-flow request | Separate evidence excerpts from style demonstration samples; prevent plot borrowing. |
+| 原文摘录不足 | 标注 `基于有限资料`，减少示例到 4 段，说明限制。 |
+| 多时期风格 | 在诊断书中标注分期，禁止将冲突风格揉在同一规则。 |
+| 搜索失败 | 请求用户提供文本样本或代表作。 |
+| 仅有风格描述 | 生成合成配置，标注 `综合风格描述`。 |
+| 用户请求 AIRP 实用提示词 | 保持 `<writing_style>` 格式，增加模型适配和重置规则。 |
+| 用户请求示例教学 | 在 XML 内用短摘录，长示例置于 XML 外并标注版权和剧情借用限制。 |
 
-Ask one clarifying question only when the input cannot identify an author, file, sample, style target, or requested model target.
+## 常见错误
 
-## Workflow
+- 不要伪造原文摘录。
+- 不要翻译需要保持原语种的示例。
+- 不要跳过引用和选段理由。
+- 不要输出纯文学评论而无可执行写作参数。
+- 不要让文风字段指挥未来事件、关系发展或结局。
+- 不要用作者名替代具体写作规则。
+- 不要将示例中的场景变为可复用的剧情素材。
+- 不要依赖高风险标签（羞耻、疯感、破碎）而不附加行为化替换。
+- 不要在规则中枚举具体场景替代抽象类规则。
+- 不要未经质检就声称通过验证。
 
-### Phase 1: Research or Source Extraction
+## 署名与使用限制
 
-If the user provides an author name, perform focused research using searches like:
+本技能改编自 Yandhi酱 的原创内容。
 
-1. `[author] representative works literary style`
-2. `[author] narrative criticism`
-3. `[representative work] original excerpt`
-4. `[author] cultural aesthetic terms`
-5. If the author writes in a non-English language, repeat key searches in that language.
+- 原创者：Yandhi酱
+- Discord ID：`y_a_n_d_h_i`
+- 原始帖子：https://discord.com/channels/1291925535324110879/1423575785360326716
+- 原始时间：2025/11/20 22:40
+- 作者声明：用户可直接使用，无需私下授权。
+- 已知限制：禁止商用；社区内共享、修改、管理备份均允许；需署名原作者。
 
-Extract:
-
-- At least 6 original-language excerpt candidates when available.
-- Evidence covering narrative, expression, aesthetics, and paragraphing.
-- Critical vocabulary from literary criticism.
-- Cultural terms in the source language, such as `物哀`, `陰翳`, `間`, or the relevant tradition's own terms.
-
-If the user provides text, extract equivalent evidence from the text before using outside sources.
-
-Research note format:
-
-```text
-【研究结论】
-作家/对象：
-文化背景：
-核心特征（3项）：
-主控轴：
-理论框架：
-原文来源（≥3条，若可得）：
-资料限制（若有）：
-```
-
-### Phase 2: Diagnose the Control Axis
-
-Before drafting, classify the target style's main control axis. Use the classification to decide which XML fields need the most density.
-
-#### Theoretical Control Axes
-
-| Control axis | Put most detail into |
-|---|---|
-| Emotion / reader experience | `<aesthetics_system>`, `<characterization>`, `<rhythm>` |
-| Language / lexicon / syntax | `<language>`, `<description>`, `<dialogue>` |
-| Perspective / monologue | `<perspective>`, `<temporality>`, `<characterization>` |
-| Paragraph / dialogue layout | `<paragraphing>`, `<dialogue>`, `<rhythm>` |
-| Genre / literary tradition | `<categories>`, `<palette>`, `<language>` |
-| Anti-cliche / model correction | `<prompt_discipline>`, `<characterization>`, `<language>` |
-
-#### AIRP Community Style Typology
-
-In AIRP/roleplay practice, different style families have fundamentally different primary axes. Styles within the same family can share structural templates; styles across families cannot.
-
-| Style family | Primary axis | Density focus | Examples |
-|---|---|---|---|
-| Emotion-expression styles | Emotion, reader experience | `<aesthetics_system>`, `<characterization>`, `<rhythm>`, `<paragraphing>` | 二次元文风, 治愈文风, 温情生活流 |
-| Language-feature styles | Language, lexicon, syntax | `<language>`, `<dialogue>`, `<description>`, detailed lexicon/syntax rules | 古风/文言文风, 红楼梦风, 方言文风 |
-| Narrative-structure styles | Perspective, monologue, structure | `<perspective>`, `<temporality>`, `<structure>`, `<characterization>` | 意识流, 散文小说化叙事, 自传体, 轻小说 |
-| Example-driven styles | Demonstration samples | Lightweight rules + high-quality `示例流` samples | 通用散文文风 + 换示例切换风味 |
-
-Rules:
-
-- Identify the family before drafting. Do not force an emotion-expression style into a language-heavy template or vice versa.
-- Allocate token density to the primary axis first, then fill remaining fields at lower density.
-- For language-feature styles (e.g., 古风), the model's training data is often insufficient; compensate with more lexicon/syntax rules and example boundaries.
-- For emotion-expression styles (e.g., 二次元), adding the genre label gives the model a strong baseline; spend tokens on emotion handling and paragraph rhythm instead of repeating what the label already conveys.
-- For example-driven styles, use the example-flow strategy in `citation-and-examples.md`.
-
-### Phase 3: Draft the XML
-
-Fill every field in the schema from `output-schema.md`.
-
-Rules:
-
-- Attribute values should be short executable instructions, preferably starting with verbs such as use, avoid, prefer, compress, delay, foreground.
-- `example` fields must use original-language text and remain 30-80 characters when possible.
-- `markers` must contain 3-6 concrete language markers separated by commas.
-- `core` must contain 3-5 aesthetic keywords separated by slashes.
-- `progression` may only describe single-response internal movement, not future plot trajectory.
-- `ending` may only describe local closure style, not long-term story ending, unless a separate `<tone>` was requested.
-- Paragraphing must specify dialogue/description separation, paragraph length tendency, and when to use short vs long paragraphs.
-- Avoid these vague Chinese words in generated analysis: `独特的`, `善于`, `富有`, `常用`, `巧妙地`.
-
-### Phase 4: Prompt Robustness Pass
-
-Apply `prompt-optimization.md` before final output:
-
-- Convert high-risk abstract labels into observable behavior, syntax, paragraphing, or narrative rules.
-- Prefer positive instructions; use negative instructions only as guardrails and pair them with replacements.
-- Remove unnecessary extreme words such as “必须”, “绝对”, “强制”; keep them only for hard format rules or true prohibitions.
-- Check that concrete objects, plot beats, relationship arcs, and scene sequences from examples did not become general rules.
-- If target model is Gemini, reduce emotion/personality labels and add behaviorized alternatives and example boundaries.
-- If target model is Claude, counter over-literary sameness with concrete voice, liveliness, and genre-appropriate language constraints.
-- Add reset guidance when prior context, NSFW/special scenes, or example content could drift the style.
-
-### Phase 5: Quality Gate
-
-Apply `quality-checklist.md` before final output. Fix issues before presenting the final answer.
-
-Important: token length is an estimate unless a real token-counting tool is available. Do not claim strict tool verification if no tool was run.
-
-Quality note format:
-
-```text
-【质检记录】
-初稿长度估计：
-问题（若有）：
-修正操作：
-终稿长度估计：
-```
-
-### Phase 6: Final Output
-
-Return, in this order:
-
-1. `<writing_style>` XML in a fenced XML code block.
-2. Optional separate `<tone>` block only if the user requested plot tone / story trajectory control.
-3. `【引用出处】` list.
-4. `【选段理由】` list.
-5. `【质检记录】` summary.
-
-Do not say “use artifact.” In Claude Code terminal contexts, output the XML directly or ask whether the user wants it saved as a file.
-
-## Error Handling
-
-| Situation | Handling |
-|---|---|
-| Not enough original excerpts | Mark `基于有限资料`, reduce examples to 4, and explain the limitation. |
-| Multiple style periods | Mark periodization in `<categories>` and avoid flattening the author into one style. |
-| Search fails | Ask the user for text samples or a representative work. |
-| User supplies only a style description | Generate a non-author or synthetic profile and label the evidence source. |
-| User asks for AIRP practical prompt | Preserve `<writing_style>` XML, and add model notes / reset rules rather than uncontrolled prose. |
-| User asks for examples to teach style | Use short evidence excerpts in XML; put any longer style demonstration outside XML with copyright and plot-borrowing limits. |
-| Copyright-sensitive long text requested | Use short excerpts, summaries, and citations rather than reproducing long passages. |
-
-## Common Mistakes
-
-- Do not invent original excerpts.
-- Do not translate examples when the rule requires author-language originals.
-- Do not skip citations or selection rationale.
-- Do not output literary commentary without executable writing parameters.
-- Do not omit any XML system: narrative, expression, aesthetics, or prompt discipline.
-- Do not let style fields command future events, relationship progress, or endings.
-- Do not use author names as a substitute for concrete writing rules.
-- Do not turn example scenes into reusable plot material.
-- Do not rely on high-risk labels such as “羞耻”, “疯感”, “破碎”, or “压抑” without behaviorized replacements.
-- Do not claim exact token verification unless a token-counting tool actually ran.
-
-## Attribution and Use Restrictions
-
-This skill adapts original content by Yandhi酱.
-
-- Original author: Yandhi酱
-- Discord ID: `y_a_n_d_h_i`
-- Original post: https://discord.com/channels/1291925535324110879/1423575785360326716
-- Original timestamp: 2025/11/20 22:40
-- Author note: users may directly use it when needed, without privately requesting authorization.
-- Known restrictions: commercial use is prohibited; redistribution within the community, modification within the community, and management/group backup are allowed; attribution to the original author is required.
-
-This is not a standard open-source license grant. If the original author publishes updated terms, follow the original author's latest statement.
+如原作者发布更新条款，以原作者最新声明为准。

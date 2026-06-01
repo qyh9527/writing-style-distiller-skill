@@ -1,83 +1,47 @@
-# Quality Checklist
+# 质检清单 (Quality Checklist — v2)
 
-Run this checklist before final output. Fix failures before responding.
+在产出最终 `<writing_style>` 文件之前，必须完成以下 5 维质检。
 
-## A. Theoretical Accuracy
+## A. 规则抽象度（反 AI 场景列举偏置）
 
-- [ ] Narrative person, focalization, and narrative distance are separated.
-- [ ] Temporality distinguishes order, duration, and frequency.
-- [ ] The narrative, expression, aesthetics, and prompt discipline systems do not contradict one another.
-- [ ] Each parameter is supported by at least one example, citation, user-stated requirement, model-adaptation reason, or stated evidence limitation.
-- [ ] Critical terms are used precisely rather than as decorative labels.
-- [ ] Author names are treated as research/evidence sources, not as final executable instructions.
+这是最关键的检查维度。
 
-## B. Cultural Fit
+- [ ] 所有规则是否是以动词开头的、对「一类写作场景手法」的抽象归类？
+- [ ] 绝无具体场景枚举词（如：写砧板切菜声、写电热壶水汽糊住眼睛）——具体场景只允许出现在 `>` 示例中
+- [ ] 无解释性短语（如："因为读者需要感受到..."、"这是为了保证..."）——删除解释，保留指令
+- [ ] 无重复目标声明——同一个目标只在一个位置出现
+- [ ] 每条规则不超过两句，最好一句动词开头
 
-- [ ] Aesthetic terms come from the relevant literary or cultural tradition when possible.
-- [ ] Source-language terms are preserved when translation would flatten the concept.
-- [ ] Western theory is not imposed when indigenous, genre-specific, or community-specific concepts explain the evidence better.
-- [ ] Every XML `example` remains in the author's writing language unless the source is unavailable and the limitation is stated.
-- [ ] Genre/community terms such as AIRP, light novel, 古白话, 二次元, or 示例流 are translated into executable writing behavior.
+## B. 格式规范度
 
-## C. Executability
+- [ ] 最外层被完整的 `<writing_style>` 标签包裹，属性完整（author, source, mode, family）
+- [ ] 一级子标签仅含五大标签：`<control_scope>`、`<narrative>`、`<expression>`、`<aesthetics>`、`<prompt_discipline>`
+- [ ] 内部没有任何 XML 子标签嵌套
+- [ ] 原文示例皆被 `>` 引用标记包裹，保持原语种
+- [ ] 无遗漏的分区标签
 
-- [ ] Each XML attribute can directly guide generation behavior.
-- [ ] Positive instructions and negative constraints both appear where useful.
-- [ ] Vague praise words are removed: `独特的`, `善于`, `富有`, `常用`, `巧妙地`.
-- [ ] The output is not just literary criticism; it is a usable writing-control profile.
-- [ ] No required XML section is missing: `control_scope`, `narrative_system`, `expression_system`, `aesthetics_system`, `prompt_discipline`.
-- [ ] `markers` contains 3-6 observable markers, not abstract adjectives.
-- [ ] `paragraphing` is explicit enough to guide dialogue, narration, and paragraph length.
-- [ ] `label_risk` converts risky labels into observable behaviors, syntax, dialogue, paragraphing, or narration rules.
+## C. 文风与剧情边界
 
-## D. Length and Density
+- [ ] 无任何条款控制未来剧情走向、角色结局或关系发展
+- [ ] progression 只描述单次回复内部的情感曲线或视角变化
+- [ ] ending 只描述单次回复的语态收口，无情节结局暗示
+- [ ] 如有剧情基调，确认隔离在独立 `<tone>` 块中
 
-- [ ] Target final XML length is approximately 1100-1400 tokens when the expanded schema is useful; shorter is acceptable for simple style-only requests.
-- [ ] If overlong, compress attributes, categories, and explanatory wording first.
-- [ ] Do not compress, paraphrase, or truncate `example` excerpts merely to save space.
-- [ ] If too short, add concrete markers, paragraphing, label-risk replacements, or language constraints rather than filler.
-- [ ] Report length as an estimate unless an actual token-counting tool was run.
+## D. AIRP 鲁棒性
 
-## E. AIRP / Prompt Robustness
+- [ ] 所有负向约束后以 `→` 附带正向替代动作
+- [ ] 极端词（必须、绝对、一定、强制）仅用于硬格式规则
+- [ ] 已绑定目标模型特性适配规则（Claude 抑文青病 / Gemini 抑连锁反应）
+- [ ] 重置规则覆盖 NSFW/特殊场景后的风格漂移恢复
+- [ ] 示例不借用剧情、人物、场景序列
 
-- [ ] `<writing_style>` controls presentation, not future plot trajectory.
-- [ ] Affective baseline is not confused with plot tone.
-- [ ] If plot tone is requested, it is separated into an optional `<tone>` block.
-- [ ] `progression` describes movement inside one response, not long-term story development.
-- [ ] `ending` describes local closure style, not final story outcome.
-- [ ] Paragraph control explains dialogue/description separation, paragraph length, and transition logic.
-- [ ] Abstract labels are replaced or backed by observable writing behaviors.
-- [ ] Negative instructions have positive replacement behaviors.
-- [ ] Extreme words such as `必须`, `绝对`, `强制`, `always`, and `never` are kept only for hard format rules or true prohibitions.
-- [ ] Examples guide expression only; they do not lend plot, characters, relationship arcs, scene order, or signature objects.
-- [ ] Concrete objects from samples are optional motifs unless evidence proves they are central symbols.
-- [ ] If target model is Gemini, emotion/personality tags are reduced and behaviorized alternatives are added.
-- [ ] If target model is Claude, anti-homogenization rules preserve liveliness, concrete voice, or genre-specific diction when needed.
-- [ ] If prior context, NSFW/special scenes, or examples may drift the output, `reset_rule` restores the style profile.
-- [ ] The profile favors reusable class-level rules over one-off event lists.
+## E. 语言干净度
 
-## F. Anti-AI-Generation Bias
+- [ ] 无 AI 无用赞美词：独特的、善于、富有、常用、巧妙地
+- [ ] 无 AI 模式化修辞：让文字呼吸、编织情感、画下色彩、赋予温度
+- [ ] 无装饰性副词和无功能性修饰
 
-AI-generated style prompts tend toward specific enumeration, over-explanation, and decorative rhetoric. Check for these patterns and fix them.
-
-- [ ] No rule explains its own importance with "because the reader needs to feel..." or "this is to ensure..." — remove the explanation, keep the instruction.
-- [ ] No rule enumerates specific scenes or objects when an abstract class-level principle would cover them. Ask: "does this rule describe a method, or does it list a scenario?"
-- [ ] No section repeats the same goal statement that already appears in another section.
-- [ ] No decorative AI rhetoric remains: phrases like "let the text breathe," "weave emotion," "paint with words," or "编织情感", "让文字呼吸", "赋予温度" are replaced with operational verbs.
-- [ ] Each rule is one concise sentence. If a rule takes two or more sentences, the extra sentences are either redundant or belong in a separate rule.
-- [ ] Example slots contain source-language excerpts, not AI-written illustrative prose.
-
-## G. Citation and Example Integrity
-
-- [ ] At least 6 excerpt candidates were considered when reliable sources are available.
-- [ ] Fewer excerpts are explicitly labeled `基于有限资料`.
-- [ ] Evidence excerpts and style demonstration samples are not mixed.
-- [ ] Any longer demonstration sample is authorized, public-domain, user-provided, or newly written.
-- [ ] Copyright-sensitive text is summarized or quoted only in short excerpts.
-- [ ] Citations do not invent page numbers, URLs, permissions, or original-language text.
-- [ ] Style demonstration samples (if used) show a complete micro-scene, not isolated decorative sentences.
-
-## Quality Note Template
+## 质检记录模板
 
 ```text
 【质检记录】
@@ -86,13 +50,3 @@ AI-generated style prompts tend toward specific enumeration, over-explanation, a
 修正操作：
 终稿长度估计：
 ```
-
-## Stop Conditions
-
-Stop and ask the user for more material when:
-
-- No reliable source-language excerpts are available and the user specifically requires author-grounded analysis.
-- The author or target style cannot be identified.
-- The user requests exact imitation of a living author's style without enough permitted source material; offer a high-level, non-infringing style profile instead.
-- The user requests example-flow output but provides no usable samples and does not allow synthetic or public-domain demonstrations.
-- The user asks for plot tone and style control together, but refuses to separate `<writing_style>` from `<tone>`.
