@@ -1,6 +1,6 @@
 ---
 name: writing-style-distiller
-description: Use when generating, distilling, or analyzing writing style configurations from an author name, literary text file, excerpt samples, or style description
+description: Use when asked for 文风蒸馏, 文风配置, 写作风格分析, writing style distillation, style profiles, or <writing_style> XML from an author name, literary text file, excerpt samples, or style description
 ---
 
 # Writing Style Distiller
@@ -8,6 +8,10 @@ description: Use when generating, distilling, or analyzing writing style configu
 ## Overview
 
 Generate an executable `<writing_style>` XML configuration from an author name, literary text, excerpt samples, or a style description. Treat the result as a writing-control profile: every field must guide future AI writing, not merely summarize literary criticism.
+
+## Output Language
+
+Use the user's conversation language for explanations and section labels. Keep XML tag names unchanged. Keep excerpts in the author's original writing language.
 
 ## Required Supporting Files
 
@@ -39,6 +43,7 @@ If the user provides an author name, perform focused research using searches lik
 2. `[author] narrative criticism`
 3. `[representative work] original excerpt`
 4. `[author] cultural aesthetic terms`
+5. If the author writes in a non-English language, repeat key searches in that language.
 
 Extract:
 
