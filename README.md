@@ -16,6 +16,37 @@
 
 ## 安装方式
 
+### 从 GitHub Releases 下载 zip
+
+推荐从本仓库的 GitHub Releases 下载现成 zip：
+
+- `writing-style-distiller-agent.zip`：通用 Agent/Skill 包，适合导入支持 agent 或 skill 文件夹的 IDE/Agent 工具。
+- `writing-style-distiller-claude-code-project-skill.zip`：Claude Code 项目级 skill 包，适合解压到目标项目根目录。
+
+通用包解压后结构为：
+
+```text
+writing-style-distiller/
+  SKILL.md
+  output-schema.md
+  quality-checklist.md
+  citation-and-examples.md
+  verification-notes.md
+```
+
+Claude Code 项目级包解压后结构为：
+
+```text
+.claude/
+  skills/
+    writing-style-distiller/
+      SKILL.md
+      output-schema.md
+      quality-checklist.md
+      citation-and-examples.md
+      verification-notes.md
+```
+
 ### 作为项目级 skill 使用
 
 1. 克隆或下载本仓库。

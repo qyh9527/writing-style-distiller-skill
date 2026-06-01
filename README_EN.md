@@ -16,6 +16,37 @@ Main files:
 
 ## Installation
 
+### Download zip packages from GitHub Releases
+
+The recommended installation path is to download ready-made zip packages from this repository's GitHub Releases:
+
+- `writing-style-distiller-agent.zip`: generic Agent/Skill package for IDEs or agent tools that can import an agent/skill folder.
+- `writing-style-distiller-claude-code-project-skill.zip`: Claude Code project-level skill package that can be extracted into a target project root.
+
+The generic package extracts to:
+
+```text
+writing-style-distiller/
+  SKILL.md
+  output-schema.md
+  quality-checklist.md
+  citation-and-examples.md
+  verification-notes.md
+```
+
+The Claude Code project-level package extracts to:
+
+```text
+.claude/
+  skills/
+    writing-style-distiller/
+      SKILL.md
+      output-schema.md
+      quality-checklist.md
+      citation-and-examples.md
+      verification-notes.md
+```
+
 ### Use as a project-level skill
 
 1. Clone or download this repository.

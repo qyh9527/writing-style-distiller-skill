@@ -1,2 +1,4 @@
 .claude/worktrees/
 docs/superpowers/
+dist/
+.release-staging/
