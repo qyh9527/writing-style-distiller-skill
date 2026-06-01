@@ -12,6 +12,11 @@ This repository contains a Claude Code project-level skill that converts an auth
 - **Adaptive schema**: adjusts density by style family (emotion-expression / language-feature / narrative-structure / example-driven), targeting 600–1200 tokens
 - **Separated knowledge base**: style-family taxonomy, high-risk label conversion table, and model adaptation rules managed independently
 
+## v2.1 Updates
+
+- **Clean output**: after the final phase of any mode, an additional clean xml code block containing only the `<writing_style>` (and optional `<tone>`) is output for easy copy-paste
+- **Auto-cleanup of intermediate artifacts**: after the clean output, the intermediate artifact directory under `docs/style-output/` is automatically deleted to keep the workspace tidy
+
 ## Contents
 
 ```text
@@ -130,7 +135,7 @@ Or:
 Use writing-style-distiller to analyze this text file's writing style and output <writing_style>.
 ```
 
-The skill automatically detects input type and selects the appropriate depth mode (deep/standard/fast). Each phase writes intermediate artifacts to `docs/style-output/` and pauses at a review gate to wait for your confirmation.
+The skill automatically detects input type and selects the appropriate depth mode (deep/standard/fast). Each phase writes intermediate artifacts to `docs/style-output/` and pauses at a review gate to wait for your confirmation. After the final phase, a clean `<writing_style>` code block is output for direct copying, and intermediate artifacts are automatically cleaned up.
 
 ## Source and Attribution
 
