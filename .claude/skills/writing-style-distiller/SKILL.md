@@ -123,3 +123,16 @@ Do not say “use artifact.” In Claude Code terminal contexts, output the XML 
 - Do not output literary commentary without executable writing parameters.
 - Do not omit any XML system: narrative, expression, or aesthetics.
 - Do not claim exact token verification unless a token-counting tool actually ran.
+
+## Attribution and Use Restrictions
+
+This skill adapts original content by Yandhi酱.
+
+- Original author: Yandhi酱
+- Discord ID: `y_a_n_d_h_i`
+- Original post: https://discord.com/channels/1291925535324110879/1423575785360326716
+- Original timestamp: 2025/11/20 22:40
+- Author note: users may directly use it when needed, without privately requesting authorization.
+- Known restrictions: commercial use is prohibited; redistribution within the community, modification within the community, and management/group backup are allowed; attribution to the original author is required.
+
+This is not a standard open-source license grant. If the original author publishes updated terms, follow the original author's latest statement.

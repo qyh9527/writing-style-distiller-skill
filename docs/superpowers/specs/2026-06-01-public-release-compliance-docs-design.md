@@ -21,6 +21,7 @@ Because the original license is unknown and the user reports that commercial use
 
 The documentation should state:
 
+- The original author stated that direct use is allowed when needed and that users do not need to privately request authorization.
 - Non-commercial use only unless the original author grants additional permission.
 - Community redistribution is allowed.
 - Community modification is allowed.
