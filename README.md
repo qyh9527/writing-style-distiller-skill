@@ -14,6 +14,40 @@
 - `.claude/skills/writing-style-distiller/citation-and-examples.md`：原文例句、引用出处、选段理由规则。
 - `文风蒸馏器.md`：原始提示词整理稿。
 
+## 安装方式
+
+### 作为项目级 skill 使用
+
+1. 克隆或下载本仓库。
+2. 在 Claude Code 中打开仓库根目录。
+3. 确认以下文件存在：
+
+```text
+.claude/skills/writing-style-distiller/SKILL.md
+```
+
+Claude Code 会从项目内的 `.claude/skills/` 目录发现该 skill。之后即可在当前项目中直接请求使用 `writing-style-distiller`。
+
+### 安装到全局 skills 目录
+
+如果希望在其他项目中也能使用，可以把 skill 目录复制到 Claude Code 的全局 skills 目录：
+
+```text
+~/.claude/skills/writing-style-distiller/
+```
+
+在 Windows 上通常对应：
+
+```text
+C:\Users\<你的用户名>\.claude\skills\writing-style-distiller\
+```
+
+复制后，确认全局目录下存在：
+
+```text
+~/.claude/skills/writing-style-distiller/SKILL.md
+```
+
 ## 使用方式
 
 在支持项目级 skills 的 Claude Code 环境中，可以这样请求：

@@ -14,6 +14,40 @@ Main files:
 - `.claude/skills/writing-style-distiller/citation-and-examples.md`: rules for original-language examples, citations, and selection rationale.
 - `文风蒸馏器.md`: organized source prompt.
 
+## Installation
+
+### Use as a project-level skill
+
+1. Clone or download this repository.
+2. Open the repository root in Claude Code.
+3. Confirm that this file exists:
+
+```text
+.claude/skills/writing-style-distiller/SKILL.md
+```
+
+Claude Code discovers skills from the project's `.claude/skills/` directory. After that, you can request `writing-style-distiller` directly within this project.
+
+### Install as a global skill
+
+If you want to use this skill from other projects, copy the skill directory into Claude Code's global skills directory:
+
+```text
+~/.claude/skills/writing-style-distiller/
+```
+
+On Windows, this usually maps to:
+
+```text
+C:\Users\<your-username>\.claude\skills\writing-style-distiller\
+```
+
+After copying, confirm that the global directory contains:
+
+```text
+~/.claude/skills/writing-style-distiller/SKILL.md
+```
+
 ## Usage
 
 In a Claude Code environment that supports project-level skills, you can ask:
