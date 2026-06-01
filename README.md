@@ -2,23 +2,44 @@
 
 [English README](README_EN.md)
 
-这是一个 Claude Code 项目级 skill，用于将作家名称、文学文本、摘录样本或风格描述转换为可执行的 `<writing_style>` XML 文风配置。
+这是一个 Claude Code 项目级 skill，用于将作家名称、文学文本、摘录样本或风格描述转换为可执行的 `<writing_style>` 文风配置。
+
+## v2.0 核心特性
+
+- **自适应深度管道**：根据输入复杂度自动选择深度/标准/快速三种模式（4/3/2 阶段）
+- **多阶段审查门**：每阶段文件落盘，用户可在关键节点介入修改
+- **轻量输出格式**：XML 壳 + 一级 XML 分区 + 纯文本内容，替换过重的嵌套 XML schema
+- **自适应 Schema**：按风格家族（情感表达/语言特征/叙事结构/示例驱动）自动调整密度，token 目标 600-1200
+- **知识库分离**：风格家族分类、高风险标签转换表、模型适配规则独立管理
 
 ## 项目内容
 
-主要文件：
+```text
+.claude/skills/writing-style-distiller/
+├── SKILL.md                    # 主入口：自适应路由 + 工作流调度
+├── output-format.md            # 输出格式定义 + 完整示例
+├── quality-checklist.md        # 5 维质检清单
+├── verification-notes.md       # 验证记录
+├── phases/
+│   ├── research.md             # Phase 1: 研究与证据收集
+│   ├── diagnosis.md            # Phase 2: 风格诊断与架构
+│   ├── drafting.md             # Phase 3: 文风初稿生成
+│   └── optimization.md         # Phase 4: 优化与质检
+└── knowledge/
+    ├── style-families.md       # 风格家族分类与密度表
+    ├── label-risk-table.md     # 高风险标签行为化转换表
+    └── model-adaptation.md     # Claude/Gemini 模型适配规则
+```
 
-- `.claude/skills/writing-style-distiller/SKILL.md`：Claude Code skill 主入口。
-- `.claude/skills/writing-style-distiller/output-schema.md`：`<writing_style>` XML 输出结构。
-- `.claude/skills/writing-style-distiller/quality-checklist.md`：理论准确性、文化适配性、可执行性检查清单。
-- `.claude/skills/writing-style-distiller/citation-and-examples.md`：原文例句、引用出处、选段理由规则。
+其他文件：
+
 - `文风蒸馏器.md`：原始提示词整理稿。
 
 ## 安装方式
 
 ### 从 GitHub Releases 下载 zip
 
-推荐从本仓库的 GitHub Releases 下载现成 zip：
+推荐从本仓库的 [GitHub Releases](https://github.com/qyh9527/writing-style-distiller-skill/releases) 下载现成 zip：
 
 - `writing-style-distiller-agent.zip`：通用 Agent/Skill 包，适合导入支持 agent 或 skill 文件夹的 IDE/Agent 工具。
 - `writing-style-distiller-claude-code-project-skill.zip`：Claude Code 项目级 skill 包，适合解压到目标项目根目录。
@@ -27,11 +48,19 @@
 
 ```text
 writing-style-distiller/
-  SKILL.md
-  output-schema.md
-  quality-checklist.md
-  citation-and-examples.md
-  verification-notes.md
+├── SKILL.md
+├── output-format.md
+├── quality-checklist.md
+├── verification-notes.md
+├── phases/
+│   ├── research.md
+│   ├── diagnosis.md
+│   ├── drafting.md
+│   └── optimization.md
+└── knowledge/
+    ├── style-families.md
+    ├── label-risk-table.md
+    └── model-adaptation.md
 ```
 
 Claude Code 项目级包解压后结构为：
@@ -41,10 +70,18 @@ Claude Code 项目级包解压后结构为：
   skills/
     writing-style-distiller/
       SKILL.md
-      output-schema.md
+      output-format.md
       quality-checklist.md
-      citation-and-examples.md
       verification-notes.md
+      phases/
+        research.md
+        diagnosis.md
+        drafting.md
+        optimization.md
+      knowledge/
+        style-families.md
+        label-risk-table.md
+        model-adaptation.md
 ```
 
 ### 作为项目级 skill 使用
@@ -84,7 +121,7 @@ C:\Users\<你的用户名>\.claude\skills\writing-style-distiller\
 在支持项目级 skills 的 Claude Code 环境中，可以这样请求：
 
 ```text
-使用 writing-style-distiller，帮我生成川端康成的 writing_style XML
+使用 writing-style-distiller，帮我生成川端康成的文风配置
 ```
 
 或：
@@ -92,6 +129,8 @@ C:\Users\<你的用户名>\.claude\skills\writing-style-distiller\
 ```text
 用 writing-style-distiller 分析这个文本文件的文风，并输出 <writing_style>
 ```
+
+Skill 会自动判断输入类型并选择对应的深度模式（深度/标准/快速），每个阶段会将中间产物写入 `docs/style-output/` 目录，并在审查门处暂停等待你的确认。
 
 ## 来源与署名
 

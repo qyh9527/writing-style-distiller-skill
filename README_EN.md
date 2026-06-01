@@ -2,23 +2,44 @@
 
 [中文说明](README.md)
 
-This repository contains a Claude Code project-level skill that converts an author name, literary text, excerpt samples, or a style description into an executable `<writing_style>` XML writing-style configuration.
+This repository contains a Claude Code project-level skill that converts an author name, literary text, excerpt samples, or a style description into an executable `<writing_style>` configuration.
+
+## v2.0 Key Features
+
+- **Adaptive-depth pipeline**: automatically selects deep/standard/fast mode (4/3/2 phases) based on input complexity
+- **Multi-phase review gates**: each phase writes to disk; the user can intervene at every checkpoint
+- **Lightweight output format**: XML shell + first-level XML section tags + plain-text content, replacing the heavy nested XML schema
+- **Adaptive schema**: adjusts density by style family (emotion-expression / language-feature / narrative-structure / example-driven), targeting 600–1200 tokens
+- **Separated knowledge base**: style-family taxonomy, high-risk label conversion table, and model adaptation rules managed independently
 
 ## Contents
 
-Main files:
+```text
+.claude/skills/writing-style-distiller/
+├── SKILL.md                    # Entry point: adaptive routing + workflow dispatch
+├── output-format.md            # Output format definition + full example
+├── quality-checklist.md        # 5-dimension quality checklist
+├── verification-notes.md       # Verification notes
+├── phases/
+│   ├── research.md             # Phase 1: Research & evidence collection
+│   ├── diagnosis.md            # Phase 2: Style diagnosis & architecture
+│   ├── drafting.md             # Phase 3: Style draft generation
+│   └── optimization.md         # Phase 4: Optimization & quality gate
+└── knowledge/
+    ├── style-families.md       # Style family taxonomy & density table
+    ├── label-risk-table.md     # High-risk label behaviorization table
+    └── model-adaptation.md     # Claude/Gemini model adaptation rules
+```
 
-- `.claude/skills/writing-style-distiller/SKILL.md`: main Claude Code skill entry point.
-- `.claude/skills/writing-style-distiller/output-schema.md`: canonical `<writing_style>` XML output structure.
-- `.claude/skills/writing-style-distiller/quality-checklist.md`: checklist for theoretical accuracy, cultural fit, and executability.
-- `.claude/skills/writing-style-distiller/citation-and-examples.md`: rules for original-language examples, citations, and selection rationale.
-- `文风蒸馏器.md`: organized source prompt.
+Other files:
+
+- `文风蒸馏器.md`: organized source prompt (Chinese).
 
 ## Installation
 
 ### Download zip packages from GitHub Releases
 
-The recommended installation path is to download ready-made zip packages from this repository's GitHub Releases:
+The recommended installation path is to download ready-made zip packages from this repository's [GitHub Releases](https://github.com/qyh9527/writing-style-distiller-skill/releases):
 
 - `writing-style-distiller-agent.zip`: generic Agent/Skill package for IDEs or agent tools that can import an agent/skill folder.
 - `writing-style-distiller-claude-code-project-skill.zip`: Claude Code project-level skill package that can be extracted into a target project root.
@@ -27,11 +48,19 @@ The generic package extracts to:
 
 ```text
 writing-style-distiller/
-  SKILL.md
-  output-schema.md
-  quality-checklist.md
-  citation-and-examples.md
-  verification-notes.md
+├── SKILL.md
+├── output-format.md
+├── quality-checklist.md
+├── verification-notes.md
+├── phases/
+│   ├── research.md
+│   ├── diagnosis.md
+│   ├── drafting.md
+│   └── optimization.md
+└── knowledge/
+    ├── style-families.md
+    ├── label-risk-table.md
+    └── model-adaptation.md
 ```
 
 The Claude Code project-level package extracts to:
@@ -41,10 +70,18 @@ The Claude Code project-level package extracts to:
   skills/
     writing-style-distiller/
       SKILL.md
-      output-schema.md
+      output-format.md
       quality-checklist.md
-      citation-and-examples.md
       verification-notes.md
+      phases/
+        research.md
+        diagnosis.md
+        drafting.md
+        optimization.md
+      knowledge/
+        style-families.md
+        label-risk-table.md
+        model-adaptation.md
 ```
 
 ### Use as a project-level skill
@@ -84,7 +121,7 @@ After copying, confirm that the global directory contains:
 In a Claude Code environment that supports project-level skills, you can ask:
 
 ```text
-Use writing-style-distiller to generate a writing_style XML for Yasunari Kawabata.
+Use writing-style-distiller to generate a writing style config for Yasunari Kawabata.
 ```
 
 Or:
@@ -92,6 +129,8 @@ Or:
 ```text
 Use writing-style-distiller to analyze this text file's writing style and output <writing_style>.
 ```
+
+The skill automatically detects input type and selects the appropriate depth mode (deep/standard/fast). Each phase writes intermediate artifacts to `docs/style-output/` and pauses at a review gate to wait for your confirmation.
 
 ## Source and Attribution
 
