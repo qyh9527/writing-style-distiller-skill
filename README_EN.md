@@ -17,6 +17,15 @@ This repository contains a Claude Code project-level skill that converts an auth
 - **Clean output**: after the final phase of any mode, an additional clean xml code block containing only the `<writing_style>` (and optional `<tone>`) is output for easy copy-paste
 - **Auto-cleanup of intermediate artifacts**: after the clean output, the intermediate artifact directory under `docs/style-output/` is automatically deleted to keep the workspace tidy
 
+## v2.2 Updates
+
+- **Anti-bagu knowledge base**: added `knowledge/anti-bagu.md` — systematically catalogues 6 types of formulaic patterns in AI-generated style prompts (unnecessary definitions, concrete scene enumeration, explanatory statements, formulaic rhetoric, over-expansion, incorrect example pairs), checked during Phase 3-4
+- **Abstraction checks strengthened**: the abstraction-first principle now includes "one-sentence summarization test" and "unnecessary definition removal"; quality checklist section A updated accordingly
+- **Intent probe**: a lightweight intent probing step is added between routing and Phase 1, using 1-2 anchoring questions (application scenario, aesthetic baseline, exclusion direction, structure vs. feel preference) to prevent distillation drift
+- **Example-driven family expanded**: significantly expanded the example-driven family knowledge with example selection criteria (complete scene requirement, token reference budget, tonal influence, person-matching strategy, generic framework principle) and a reference framework
+- **Persona-voice writing**: added as an optional path, documenting implementation points for writing style rules in the author's/work's voice, translator interference, character conflict, and other considerations
+- **Compression priority expanded**: Phase 4 compression table expanded from 6 to 8 items, inserting summarization test and definition removal steps
+
 ## Contents
 
 ```text
@@ -33,7 +42,8 @@ This repository contains a Claude Code project-level skill that converts an auth
 └── knowledge/
     ├── style-families.md       # Style family taxonomy & density table
     ├── label-risk-table.md     # High-risk label behaviorization table
-    └── model-adaptation.md     # Claude/Gemini model adaptation rules
+    ├── model-adaptation.md     # Claude/Gemini model adaptation rules
+    └── anti-bagu.md            # Anti-formulaic style prompt guide
 ```
 
 Other files:

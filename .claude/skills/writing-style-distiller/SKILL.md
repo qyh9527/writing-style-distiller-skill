@@ -37,6 +37,7 @@ description: Use when asked for 文风蒸馏, 文风配置, 写作风格分析, 
 | `knowledge/style-families.md` | 风格家族分类与密度表 | Phase 2 |
 | `knowledge/label-risk-table.md` | 高风险标签行为化转换 | Phase 3-4 |
 | `knowledge/model-adaptation.md` | 模型适配规则 | Phase 4 |
+| `knowledge/anti-bagu.md` | 文风提示词反八股指南 | Phase 3-4 |
 
 ## 自适应路由
 
@@ -58,6 +59,21 @@ description: Use when asked for 文风蒸馏, 文风配置, 写作风格分析, 
 
 仅当输入无法识别作者、文件、样本、风格目标或模型目标时，才提出一个澄清问题。
 
+## 意图探针（路由完成后、Phase 1 之前）
+
+路由确定深度模式后，在正式进入 Phase 1 之前，向用户提出 1-2 个轻量问题以锚定蒸馏方向。目的是避免"不清楚自己要什么"导致的方向偏离。
+
+探针问题池（按需选取，不必全问）：
+- "你希望这个文风用在什么类型的创作上？"（确定应用场景：网文/轻小说/散文/AIRP等）
+- "你脑海里有没有一段让你觉得'就是这种感觉'的文字？"（锚定审美基线）
+- "你最想避免的文字效果是什么？"（反向锚定，排除不想要的方向）
+- "你更看重哪个维度：文字的结构方式，还是文字带给读者的感受？"（定位文字结构 vs 文字感受的侧重）
+
+规则：
+- 若用户输入已经非常明确（如指定了作者+代表作+目标模型+应用场景），可以跳过探针直接进入 Phase 1。
+- 探针回答与路由诊断一起展示，不单独设审查门。
+- 探针结果记录在 Phase 1 研究笔记中，作为后续诊断的参考。
+
 ## 工作流阶段
 
 ### 深度模式（4 阶段）
@@ -73,12 +89,12 @@ description: Use when asked for 文风蒸馏, 文风配置, 写作风格分析, 
 - 🚪 审查门：展示密度分配方案，确认架构。
 
 **Phase 3: 文风初稿**
-- 读取 `phases/drafting.md` + `output-format.md` + `knowledge/label-risk-table.md` 执行。
+- 读取 `phases/drafting.md` + `output-format.md` + `knowledge/label-risk-table.md` + `knowledge/anti-bagu.md` 执行。
 - 产出：`docs/style-output/{timestamp}-{style-name}/style-draft.md`
 - 🚪 审查门：展示完整初稿，接受修改意见。
 
 **Phase 4: 优化 + 质检**
-- 读取 `phases/optimization.md` + `quality-checklist.md` + `knowledge/model-adaptation.md` 执行。
+- 读取 `phases/optimization.md` + `quality-checklist.md` + `knowledge/model-adaptation.md` + `knowledge/anti-bagu.md` 执行。
 - 产出：终端输出最终 `<writing_style>` + 可选 `final-style.md` 落盘。
 
 ### 标准模式（3 阶段）
