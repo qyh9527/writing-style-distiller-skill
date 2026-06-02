@@ -26,6 +26,16 @@ This repository contains a Claude Code project-level skill that converts an auth
 - **Persona-voice writing**: added as an optional path, documenting implementation points for writing style rules in the author's/work's voice, translator interference, character conflict, and other considerations
 - **Compression priority expanded**: Phase 4 compression table expanded from 6 to 8 items, inserting summarization test and definition removal steps
 
+## v2.3 Updates
+
+- **Scene-responsive / dialogue-driven families**: two new style family classifications (scene-responsive, dialogue-driven) with expanded density allocation tables and trigger conditions
+- **Anti-bagu enhanced**: anti-formulaic knowledge base extended with patterns #7-10 (hollow contrast, modifier stacking, universal templates, pseudo-personalized labels)
+- **Exemplary patterns knowledge base**: added `knowledge/exemplary-patterns.md` with verified style configuration structural patterns
+
+## v2.4 Updates
+
+- **Output deduplication**: removed the "clean output" concept — all modes now output exactly one `<writing_style>` configuration. Supporting information (citations, QA records) comes first, with the XML code block last for one-click copy
+
 ## Contents
 
 ```text
@@ -43,7 +53,8 @@ This repository contains a Claude Code project-level skill that converts an auth
     ├── style-families.md       # Style family taxonomy & density table
     ├── label-risk-table.md     # High-risk label behaviorization table
     ├── model-adaptation.md     # Claude/Gemini model adaptation rules
-    └── anti-bagu.md            # Anti-formulaic style prompt guide
+    ├── anti-bagu.md            # Anti-formulaic style prompt guide
+    └── exemplary-patterns.md   # Exemplary structure patterns
 ```
 
 Other files:
@@ -75,7 +86,9 @@ writing-style-distiller/
 └── knowledge/
     ├── style-families.md
     ├── label-risk-table.md
-    └── model-adaptation.md
+    ├── model-adaptation.md
+    ├── anti-bagu.md
+    └── exemplary-patterns.md
 ```
 
 The Claude Code project-level package extracts to:
@@ -97,6 +110,8 @@ The Claude Code project-level package extracts to:
         style-families.md
         label-risk-table.md
         model-adaptation.md
+        anti-bagu.md
+        exemplary-patterns.md
 ```
 
 ### Use as a project-level skill
@@ -145,7 +160,7 @@ Or:
 Use writing-style-distiller to analyze this text file's writing style and output <writing_style>.
 ```
 
-The skill automatically detects input type and selects the appropriate depth mode (deep/standard/fast). Each phase writes intermediate artifacts to `docs/style-output/` and pauses at a review gate to wait for your confirmation. After the final phase, a clean `<writing_style>` code block is output for direct copying, and intermediate artifacts are automatically cleaned up.
+The skill automatically detects input type and selects the appropriate depth mode (deep/standard/fast). Each phase writes intermediate artifacts to `docs/style-output/` and pauses at a review gate to wait for your confirmation. After the final phase, supporting information is output first, followed by a single `<writing_style>` XML code block for one-click copy, and intermediate artifacts are automatically cleaned up.
 
 ## Source and Attribution
 

@@ -26,6 +26,16 @@
 - **人格化写法**：新增可选路径文档，说明用作者/作品口吻撰写文风规则的实施要点、译者干扰、角色冲突等注意事项
 - **压缩优先级扩展**：Phase 4 压缩表从 6 项扩展到 8 项，插入概括测试和定义删除步骤
 
+## v2.3 更新
+
+- **场景响应/对话驱动家族**：新增两个风格家族分类（场景响应型、对话驱动型），扩展密度分配表与触发条件
+- **反八股增强**：反八股知识库新增第 7-10 类八股模式识别（空洞对比、修饰词堆砌、万能模板、伪个性化标签）
+- **优秀范式知识库**：新增 `knowledge/exemplary-patterns.md`，提供经过验证的文风配置结构范式参考
+
+## v2.4 更新
+
+- **输出去重**：移除"纯净输出"概念，所有模式只输出一份 `<writing_style>` 配置。附属信息（引用出处、质检记录）前置，XML 代码块放最后，用户可直接一键复制
+
 ## 项目内容
 
 ```text
@@ -43,7 +53,8 @@
     ├── style-families.md       # 风格家族分类与密度表
     ├── label-risk-table.md     # 高风险标签行为化转换表
     ├── model-adaptation.md     # Claude/Gemini 模型适配规则
-    └── anti-bagu.md            # 文风提示词反八股指南
+    ├── anti-bagu.md            # 文风提示词反八股指南
+    └── exemplary-patterns.md   # 优秀范式知识库
 ```
 
 其他文件：
@@ -75,7 +86,9 @@ writing-style-distiller/
 └── knowledge/
     ├── style-families.md
     ├── label-risk-table.md
-    └── model-adaptation.md
+    ├── model-adaptation.md
+    ├── anti-bagu.md
+    └── exemplary-patterns.md
 ```
 
 Claude Code 项目级包解压后结构为：
@@ -97,6 +110,8 @@ Claude Code 项目级包解压后结构为：
         style-families.md
         label-risk-table.md
         model-adaptation.md
+        anti-bagu.md
+        exemplary-patterns.md
 ```
 
 ### 作为项目级 skill 使用
@@ -145,7 +160,7 @@ C:\Users\<你的用户名>\.claude\skills\writing-style-distiller\
 用 writing-style-distiller 分析这个文本文件的文风，并输出 <writing_style>
 ```
 
-Skill 会自动判断输入类型并选择对应的深度模式（深度/标准/快速），每个阶段会将中间产物写入 `docs/style-output/` 目录，并在审查门处暂停等待你的确认。最终阶段完成后，会额外输出一个纯净版 `<writing_style>` 代码块供直接复制，并自动清理中间产物。
+Skill 会自动判断输入类型并选择对应的深度模式（深度/标准/快速），每个阶段会将中间产物写入 `docs/style-output/` 目录，并在审查门处暂停等待你的确认。最终阶段输出附属信息后，以一个 `<writing_style>` XML 代码块收尾供直接复制，随后自动清理中间产物。
 
 ## 来源与署名
 
