@@ -36,25 +36,40 @@
 
 - **输出去重**：移除"纯净输出"概念，所有模式只输出一份 `<writing_style>` 配置。附属信息（引用出处、质检记录）前置，XML 代码块放最后，用户可直接一键复制
 
+## v2.5 更新
+
+- **架构瘦身**：SKILL.md 从 178 行精简到 ~85 行，异常处理/常见错误拆分到独立文件 `error-handling.md`，符合 Anthropic 官方 Skill 最佳实践
+- **description 规范化**：修改为官方推荐格式（第一句能力描述 + 第二句触发词），提升 skill 发现准确率
+- **Quick Start + 流程看板**：SKILL.md 新增极速上手示例和 Checklist 进度看板
+- **权威渠道优选**：Phase 1 研究阶段新增六级权威渠道优先级体系（★★★学术/原作 → ☆☆☆自媒体），每次研究至少使用 2 个 ★★★ 级渠道，低级渠道必须交叉验证
+- **叙事人称与视角知识库**：新增 `knowledge/narrative-perspective.md`，基于热奈特聚焦理论系统化整理人称×聚焦分类、各视角对文风的具体影响、AI 常见人称失败模式及防御规则、AIRP 双视角特殊配置
+- **人称视角深度集成**：Phase 2 诊断新增人称与视角诊断步骤，Phase 3 起草新增人称锚定句和级联约束检查，质检清单新增第 I 维「人称与视角一致性」（视角泄漏、跳脑、人称滑动等 6 项检查）
+- **100+ 行文件目录**：anti-bagu、style-families、exemplary-patterns、output-format 四个长文件顶部添加目录索引
+- **质检维度扩展**：质检清单从 5 维扩展到 9 维（A-I），覆盖规则抽象度、格式、边界、鲁棒性、干净度、动态一致、铁律、语域、人称
+- **打包脚本改进**：`_create_release_zips.py` 现在自动从源目录同步到 release-staging（清空再复制），排除开发专用文件
+- **模型执行门槛**：SKILL.md 标注建议使用 Sonnet 或 Opus 及以上模型执行
+
 ## 项目内容
 
 ```text
 .claude/skills/writing-style-distiller/
 ├── SKILL.md                    # 主入口：自适应路由 + 工作流调度
 ├── output-format.md            # 输出格式定义 + 完整示例
-├── quality-checklist.md        # 5 维质检清单
-├── verification-notes.md       # 验证记录
+├── quality-checklist.md        # 9 维质检清单
+├── error-handling.md           # 异常处理与常见错误
+├── verification-notes.md       # 验证记录（开发参考）
 ├── phases/
-│   ├── research.md             # Phase 1: 研究与证据收集
-│   ├── diagnosis.md            # Phase 2: 风格诊断与架构
-│   ├── drafting.md             # Phase 3: 文风初稿生成
+│   ├── research.md             # Phase 1: 研究与证据收集（含权威渠道优选）
+│   ├── diagnosis.md            # Phase 2: 风格诊断与架构（含人称视角诊断）
+│   ├── drafting.md             # Phase 3: 文风初稿生成（含人称锚定）
 │   └── optimization.md         # Phase 4: 优化与质检
 └── knowledge/
     ├── style-families.md       # 风格家族分类与密度表
     ├── label-risk-table.md     # 高风险标签行为化转换表
     ├── model-adaptation.md     # Claude/Gemini 模型适配规则
     ├── anti-bagu.md            # 文风提示词反八股指南
-    └── exemplary-patterns.md   # 优秀范式知识库
+    ├── exemplary-patterns.md   # 优秀范式知识库
+    └── narrative-perspective.md # 叙事人称与视角知识库
 ```
 
 其他文件：
@@ -77,7 +92,7 @@ writing-style-distiller/
 ├── SKILL.md
 ├── output-format.md
 ├── quality-checklist.md
-├── verification-notes.md
+├── error-handling.md
 ├── phases/
 │   ├── research.md
 │   ├── diagnosis.md
@@ -88,7 +103,8 @@ writing-style-distiller/
     ├── label-risk-table.md
     ├── model-adaptation.md
     ├── anti-bagu.md
-    └── exemplary-patterns.md
+    ├── exemplary-patterns.md
+    └── narrative-perspective.md
 ```
 
 Claude Code 项目级包解压后结构为：
@@ -100,7 +116,7 @@ Claude Code 项目级包解压后结构为：
       SKILL.md
       output-format.md
       quality-checklist.md
-      verification-notes.md
+      error-handling.md
       phases/
         research.md
         diagnosis.md
@@ -112,6 +128,7 @@ Claude Code 项目级包解压后结构为：
         model-adaptation.md
         anti-bagu.md
         exemplary-patterns.md
+        narrative-perspective.md
 ```
 
 ### 作为项目级 skill 使用

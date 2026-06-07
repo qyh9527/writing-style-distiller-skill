@@ -36,25 +36,40 @@ This repository contains a Claude Code project-level skill that converts an auth
 
 - **Output deduplication**: removed the "clean output" concept — all modes now output exactly one `<writing_style>` configuration. Supporting information (citations, QA records) comes first, with the XML code block last for one-click copy
 
+## v2.5 Updates
+
+- **Architecture slim-down**: SKILL.md trimmed from 178 to ~85 lines; error handling / common mistakes split into standalone `error-handling.md`, following Anthropic's official Skill best practices
+- **Description normalization**: updated to official recommended format (first sentence: capability, second sentence: triggers), improving skill discovery accuracy
+- **Quick Start + progress checklist**: SKILL.md now includes a Quick Start example and a Checklist progress board
+- **Authoritative source prioritization**: Phase 1 research adds a six-tier source authority system (★★★ academic/original texts → ☆☆☆ self-media); every research session must use ≥2 ★★★ sources, lower-tier sources require cross-validation
+- **Narrative perspective knowledge base**: new `knowledge/narrative-perspective.md` — systematically covers person × focalization taxonomy (based on Genette's theory), each POV's concrete impact on prose style, common AI person/POV failures and defenses, and AIRP dual-perspective rules
+- **Deep POV integration**: Phase 2 diagnosis adds person & focalization diagnostics; Phase 3 drafting adds person anchoring sentence and cascade constraint checks; quality checklist adds dimension I "Person & POV consistency" (6 checks: POV leakage, head-hopping, person drift, etc.)
+- **Table of contents for 100+ line files**: anti-bagu, style-families, exemplary-patterns, output-format now have top-level TOCs
+- **Quality checklist expansion**: expanded from 5 to 9 dimensions (A–I), covering abstraction, format, boundary, robustness, cleanliness, dynamic consistency, iron rules, register, and person/POV
+- **Packaging script improvement**: `_create_release_zips.py` now auto-syncs from source to release-staging (clean + copy), excluding dev-only files
+- **Model execution threshold**: SKILL.md now notes Sonnet or Opus-tier models recommended for execution
+
 ## Contents
 
 ```text
 .claude/skills/writing-style-distiller/
 ├── SKILL.md                    # Entry point: adaptive routing + workflow dispatch
 ├── output-format.md            # Output format definition + full example
-├── quality-checklist.md        # 5-dimension quality checklist
-├── verification-notes.md       # Verification notes
+├── quality-checklist.md        # 9-dimension quality checklist
+├── error-handling.md           # Error handling & common mistakes
+├── verification-notes.md       # Verification notes (dev reference)
 ├── phases/
-│   ├── research.md             # Phase 1: Research & evidence collection
-│   ├── diagnosis.md            # Phase 2: Style diagnosis & architecture
-│   ├── drafting.md             # Phase 3: Style draft generation
+│   ├── research.md             # Phase 1: Research & evidence collection (with authority prioritization)
+│   ├── diagnosis.md            # Phase 2: Style diagnosis & architecture (with POV diagnostics)
+│   ├── drafting.md             # Phase 3: Style draft generation (with person anchoring)
 │   └── optimization.md         # Phase 4: Optimization & quality gate
 └── knowledge/
     ├── style-families.md       # Style family taxonomy & density table
     ├── label-risk-table.md     # High-risk label behaviorization table
     ├── model-adaptation.md     # Claude/Gemini model adaptation rules
     ├── anti-bagu.md            # Anti-formulaic style prompt guide
-    └── exemplary-patterns.md   # Exemplary structure patterns
+    ├── exemplary-patterns.md   # Exemplary structure patterns
+    └── narrative-perspective.md # Narrative person & POV knowledge base
 ```
 
 Other files:
@@ -77,7 +92,7 @@ writing-style-distiller/
 ├── SKILL.md
 ├── output-format.md
 ├── quality-checklist.md
-├── verification-notes.md
+├── error-handling.md
 ├── phases/
 │   ├── research.md
 │   ├── diagnosis.md
@@ -88,7 +103,8 @@ writing-style-distiller/
     ├── label-risk-table.md
     ├── model-adaptation.md
     ├── anti-bagu.md
-    └── exemplary-patterns.md
+    ├── exemplary-patterns.md
+    └── narrative-perspective.md
 ```
 
 The Claude Code project-level package extracts to:
@@ -100,7 +116,7 @@ The Claude Code project-level package extracts to:
       SKILL.md
       output-format.md
       quality-checklist.md
-      verification-notes.md
+      error-handling.md
       phases/
         research.md
         diagnosis.md
@@ -112,6 +128,7 @@ The Claude Code project-level package extracts to:
         model-adaptation.md
         anti-bagu.md
         exemplary-patterns.md
+        narrative-perspective.md
 ```
 
 ### Use as a project-level skill
