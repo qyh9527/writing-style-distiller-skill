@@ -49,13 +49,26 @@ This repository contains a Claude Code project-level skill that converts an auth
 - **Packaging script improvement**: `_create_release_zips.py` now auto-syncs from source to release-staging (clean + copy), excluding dev-only files
 - **Model execution threshold**: SKILL.md now notes Sonnet or Opus-tier models recommended for execution
 
+## v2.6 Updates
+
+- **Model adaptation deepening**: Claude adds "comfort zone breakthrough strategies" (identifying literary tendencies, multi-layer constraints for out-of-zone styles); Gemini adds "label chaining mechanism" (extreme decomposition problem and behavioral sequence translation) and "high-frequency zone evasion"; new cross-model universal principles (U-shaped attention distribution, positive phrasing principle, high-frequency zone defense)
+- **Anti-bagu expansion**: added types 11-12 (physics-word abuse, extreme-word stacking), enhanced type 5 with warm-slice-of-life error/correct comparison
+- **Exemplary patterns split & new**: item 5 split into 5a scene-rhythm-loop paradigm (male visual novel) and 5b keyword-chain+sensory-atmosphere paradigm (Chinese period romance); new item 6 "three-layer framework formula" as beginner scaffold
+- **Label risk table expansion**: added Gemini label-chaining degradation warning, 3 NSFW labels (arousal/orgasm/semen), Gemini-specific failure for shame, persona-slope defense for dirty-talk
+- **Output format enhancement**: new U-shaped attention zone placement principle, control_scope standard declaration template, 3 tone block gradient examples, format extension notes (scene rhythm loops/base-color declarations/variable encapsulation)
+- **Quality checklist expansion**: expanded from 9 to 11 dimensions (A–K), adding J (token efficiency & attention allocation) and K (NSFW scene robustness)
+- **NSFW robustness hardening**: drafting adds post-NSFW style drift reset rules and token efficiency principle; error handling adds 3 new scenarios and 4 new common mistakes
+- **Research phase enhancement**: probe pool adds three-layer framework guidance question and bagu-prediction probe
+- **Compression optimization**: new P0 physics-word check (highest priority), Gemini word-echoing check, 2 new evidence-honesty labels
+- **Density table calibration**: style-families.md adds manifesto, example-tone-influence warning, field-tested density range notes; diagnosis.md fixes step numbering, adds cross-family handling rules
+
 ## Contents
 
 ```text
 .claude/skills/writing-style-distiller/
 ├── SKILL.md                    # Entry point: adaptive routing + workflow dispatch
 ├── output-format.md            # Output format definition + full example
-├── quality-checklist.md        # 9-dimension quality checklist
+├── quality-checklist.md        # 11-dimension quality checklist
 ├── error-handling.md           # Error handling & common mistakes
 ├── verification-notes.md       # Verification notes (dev reference)
 ├── phases/

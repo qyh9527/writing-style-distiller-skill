@@ -31,7 +31,7 @@ description: >-
 | 文件 | 用途 | 读取时机 |
 |---|---|---|
 | `output-format.md` | 输出格式定义与完整示例 | Phase 3-4 |
-| `quality-checklist.md` | 质检清单（9 维精悍版） | Phase 4 |
+| `quality-checklist.md` | 质检清单（11 维精悍版） | Phase 4 |
 | `phases/research.md` | 研究与证据收集指令（**优选权威学术渠道**） | Phase 1 |
 | `phases/diagnosis.md` | 风格诊断与架构指令 | Phase 2 |
 | `phases/drafting.md` | 文风初稿生成指令 | Phase 3 |
