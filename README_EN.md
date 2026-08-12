@@ -12,7 +12,7 @@ Converts author names, literary texts, excerpts, or style descriptions into exec
 - **Model adaptation** — Claude comfort-zone breakthrough, Gemini label-chaining suppression, cross-model universal principles
 - **Research-grade sourcing** — six-tier authority priority; academic databases and original texts preferred
 - **Narrative perspective system** — Genette-based person × focalization taxonomy with POV-leak and head-hopping defenses
-- **Anti-formula guide** — 12 categories of AI-generated formulaic pattern detection and correction
+- **Anti-formula guide** — 13 categories of AI-generated formulaic pattern detection and correction
 - **Exemplary patterns** — 5 verified structural paradigms + 3-layer beginner scaffold
 
 ## Version History
@@ -26,6 +26,7 @@ Converts author names, literary texts, excerpts, or style descriptions into exec
 | v2.4 | One-click copy output |
 | v2.5 | Architecture slim-down, authority prioritization, narrative perspective KB, QA expanded to 9 dims |
 | v2.6 | Model adaptation deepening, anti-formula to 12 types, pattern split, QA to 11 dims, attention optimization |
+| v2.7 | Fix Phase 4 QA-dim sync, control_scope declaration dedup, worldview-robustness extension, anti-formula to 13 types, author-name anchoring rule, style-critique route |
 
 ## Directory Structure
 

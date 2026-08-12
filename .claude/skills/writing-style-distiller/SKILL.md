@@ -2,9 +2,10 @@
 name: writing-style-distiller
 description: >-
   Distills executable <writing_style> XML configuration from author names, 
-  literary texts, excerpt samples, or style descriptions. Use when asked for 
-  文风蒸馏, 文风配置, 写作风格分析, AIRP writing style prompts, writing style 
-  distillation, style profiles, or <writing_style> XML.
+  literary texts, excerpt samples, or style descriptions; also critiques and 
+  rewrites existing style prompts. Use when asked for 文风蒸馏, 文风配置, 
+  写作风格分析, 文风批改, AIRP writing style prompts, SillyTavern 酒馆预设文风, 
+  角色卡文风, writing style distillation, style profiles, or <writing_style> XML.
 ---
 
 # Writing Style Distiller v2
@@ -22,7 +23,7 @@ description: >-
 
 1. **自动诊断并输出**：进入 **[深度]模式**，预计 4 个阶段，每阶段有审查门。
 2. **轻量提问锚定**（意图探针）。
-3. **分步执行**：按阶段进行并落盘。向用户确认后，点击下一阶段，最终输出一份高精准的 `<writing_style>`。
+3. **分步执行**：按阶段进行并落盘。向用户确认后，进入下一阶段，最终输出一份高精准的 `<writing_style>`。
 
 ## 📦 支持文件
 
@@ -56,6 +57,7 @@ description: >-
 | 本地文件 / 大量摘录 | **标准** | P1 分析 → P2 初稿+质检 → P3 输出 |
 | 少量摘录（<500字） | **标准** | P1 分析 → P2 初稿+质检 → P3 输出 |
 | 风格描述（>100字或多维度） | **标准** | P1 分析 → P2 初稿+质检 → P3 输出 |
+| 文风批改/诊断（贴出现成文风挑毛病） | **标准** | P1 分析 → P2 初稿+质检 → P3 输出 |
 | 风格描述（≤100字且单一方向） | **快速** | P1 草稿 → P2 输出 |
 | 已有文风 + 修改请求 | **快速** | P1 草稿 → P2 输出 |
 
